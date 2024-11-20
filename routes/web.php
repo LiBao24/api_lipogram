@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\SearchController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\KomentarController;
+use App\Http\Controllers\NotifikasiController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -48,3 +49,11 @@ Route::delete('/api/komentar/{id}', [KomentarController::class, 'hapusKomentar']
 // Rute untuk melihat komentar pada post
 Route::get('/api/posts/{postId}/komentar', [KomentarController::class, 'lihatKomentar'])->name('komentars.lihat');
 
+// Rute untuk menambah notifikasi
+Route::post('/api/notifikasi', [NotifikasiController::class, 'tambahNotifikasi'])->name('notifikasis.tambah');
+
+// Rute untuk melihat notifikasi berdasarkan user
+Route::get('/api/notifikasi/{userId}', [NotifikasiController::class, 'lihatNotifikasi'])->name('notifikasis.lihat');
+
+// Rute untuk menghapus notifikasi
+Route::delete('/api/notifikasi/{id}', [NotifikasiController::class, 'hapusNotifikasi'])->name('notifikasis.hapus');
