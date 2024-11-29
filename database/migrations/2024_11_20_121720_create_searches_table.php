@@ -6,26 +6,17 @@ use Illuminate\Support\Facades\Schema;
 
 class CreateSearchesTable extends Migration
 {
-    /**
-     * Menjalankan migrasi untuk membuat tabel pencarian.
-     *
-     * @return void
-     */
-    public function up()
+    public function up(): void
     {
         Schema::create('searches', function (Blueprint $table) {
-            // Menggunakan id_search sebagai primary key
-            $table->string('id_search')->primary();
-            $table->string('search'); // Kolom untuk menyimpan kata kunci pencarian
-            $table->timestamps();      // Kolom created_at dan updated_at
+            $table->increments('id_search');
+            $table->string('search', 255);
+            $table->timestamps();
+
+            $table->foreign('id_user')->references('id_user')->on('users')->onDelete('cascade');
         });
     }
 
-    /**
-     * Menghapus tabel pencarian.
-     *
-     * @return void
-     */
     public function down()
     {
         Schema::dropIfExists('searches');

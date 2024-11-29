@@ -9,30 +9,16 @@ class Search extends Model
 {
     use HasFactory;
 
-    // Tentukan nama tabel yang terkait dengan model
     protected $table = 'searches';
+    protected $primaryKey = 'id_search';
 
-    // Tentukan kolom yang dapat diisi
     protected $fillable = [
+        'id_user',
         'search',
     ];
 
-    // Tentukan primary key
-    protected $primaryKey = 'id_search';
-
-    /**
-     * Cari berdasarkan kata kunci.
-     */
-    public static function cari($keyword)
+    public function user()
     {
-        return self::where('search', 'like', "%{$keyword}%")->get();
-    }
-
-    /**
-     * Menampilkan riwayat pencarian terbaru.
-     */
-    public static function riwayat()
-    {
-        return self::orderBy('created_at', 'desc')->limit(5)->get();
+        return $this->belongsTo(User::class, 'id_user', 'id_user');
     }
 }

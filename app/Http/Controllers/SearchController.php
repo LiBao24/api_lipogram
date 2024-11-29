@@ -7,50 +7,37 @@ use App\Models\Search;
 
 class SearchController extends Controller
 {
-    /**
-     * Menyimpan pencarian baru.
-     */
     public function store(Request $request)
     {
-        // Validasi input
         $request->validate([
+            'id_user' => 'required|exists:users,id_user',
             'search' => 'required|string|max:255',
         ]);
 
-        // Simpan pencarian baru ke database
         $search = Search::create([
-            'id_search' => uniqid(), // Menggunakan uniqid() sebagai id_search
+            'id_user' => $request->input('id_user'),
             'search' => $request->input('search'),
         ]);
 
-        // Kembalikan respon sukses
         return response()->json(['message' => 'Pencarian berhasil disimpan.', 'data' => $search], 201);
     }
 
-    /**
-     * Menampilkan hasil pencarian berdasarkan kata kunci.
-     */
     public function cari(Request $request)
     {
-        // Ambil kata kunci dari input
         $keyword = $request->input('q');
 
-        // Cari hasil pencarian menggunakan model
-        $results = Search::cari($keyword);
+        $results = Search::where('search', 'like', "%{$keyword}%")->get();
 
-        // Kembalikan hasil pencarian dalam format JSON
         return response()->json($results);
     }
 
-    /**
-     * Menampilkan riwayat pencarian.
-     */
-    public function riwayat()
+    public function riwayat($id_user)
     {
-        // Ambil riwayat pencarian terbaru
-        $history = Search::riwayat();
+        $history = Search::where('id_user', $id_user) // Filter berdasarkan user
+            ->orderBy('created_at', 'desc')
+            ->limit(5)
+            ->get();
 
-        // Kembalikan riwayat dalam format JSON
         return response()->json($history);
     }
 }
