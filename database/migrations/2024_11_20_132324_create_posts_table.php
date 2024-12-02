@@ -6,15 +6,10 @@ use Illuminate\Support\Facades\Schema;
 
 class CreatePostsTable extends Migration
 {
-    /**
-     * Menjalankan migrasi untuk membuat tabel posts.
-     *
-     * @return void
-     */
     public function up()
     {
         Schema::create('posts', function (Blueprint $table) {
-            $table->id('id_post');
+            $table->increments('id_post');
             $table->unsignedBigInteger('id_user');
             $table->longText('media');
             $table->text('caption');
@@ -23,16 +18,10 @@ class CreatePostsTable extends Migration
             $table->date('wkt_post');
             $table->timestamps();
 
-            // Menambahkan foreign key untuk id_user (relasi ke tabel users)
             $table->foreign('id_user')->references('id')->on('users')->onDelete('cascade');
         });
     }
 
-    /**
-     * Menghapus tabel posts.
-     *
-     * @return void
-     */
     public function down()
     {
         Schema::dropIfExists('posts');

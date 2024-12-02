@@ -13,9 +13,9 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('profiles', function (Blueprint $table) {
-            $table->increments('id_profil'); // Primary Key
-            $table->unsignedInteger('id_user'); // Foreign Key
+        Schema::create('profils', function (Blueprint $table) {
+            $table->increments('id_profil');
+            $table->Integer('id_user');
             $table->string('nama', 255);
             $table->string('bio', 255)->nullable();
             $table->binary('foto_profil')->nullable(); // Menyimpan gambar sebagai binary data
@@ -23,7 +23,6 @@ return new class extends Migration
             $table->integer('jmlh_mengikuti')->default(0);
             $table->integer('jmlh_post')->default(0);
 
-            // Foreign key constraint
             $table->foreign('id_user')->references('id_user')->on('users')->onDelete('cascade');
         });
     }
@@ -35,6 +34,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('profiles');
+        Schema::dropIfExists('profils');
     }
 };
