@@ -6,11 +6,6 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     *
-     * @return void
-     */
     public function up()
     {
         Schema::create('profils', function (Blueprint $table) {
@@ -23,15 +18,10 @@ return new class extends Migration
             $table->integer('jmlh_mengikuti')->default(0);
             $table->integer('jmlh_post')->default(0);
 
-            $table->foreign('id_user')->references('id_user')->on('users')->onDelete('cascade');
+            // $table->foreign('id_user')->references('id_user')->on('users');
         });
     }
 
-    /**
-     * Reverse the migrations.
-     *
-     * @return void
-     */
     public function down()
     {
         Schema::dropIfExists('profils');

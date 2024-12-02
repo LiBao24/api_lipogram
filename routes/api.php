@@ -8,6 +8,27 @@ use App\Http\Controllers\NotifikasiController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ProfilController;
 
+Route::post('/daftar', [UserController::class, 'daftar']);
+Route::post('/login', [UserController::class, 'login']);
+
+Route::prefix('api/users')->group(function () {
+    Route::post('/daftar', [UserController::class, 'daftar'])->name('users.daftar');
+    Route::post('/login', [UserController::class, 'login'])->name('users.login');
+    Route::post('/logout', [UserController::class, 'logout'])->middleware('auth:sanctum')->name('users.logout');
+    Route::middleware('auth:sanctum')->group(function () {
+        Route::get('/profile', [UserController::class, 'profil'])->name('users.profile');
+        Route::patch('/profile/username', [UserController::class, 'setUsername'])->name('users.updateUsername');
+        Route::patch('/profile/password', [UserController::class, 'setPassword'])->name('users.updatePassword');
+        Route::put('/profile', [UserController::class, 'updateProfile'])->name('users.updateProfile');
+    });
+});
+
+Route::middleware('auth:sanctum')->group(function () {
+    Route::get('/profils/{id}', [ProfilController::class, 'show']);
+    Route::put('/profils/{id}', [ProfilController::class, 'update']);
+    Route::get('/profils/{id}/stats', [ProfilController::class, 'stats']);
+});
+
 Route::prefix('api/searches')->group(function () {
     Route::post('/', [SearchController::class, 'store'])->name('searches.store');
     Route::get('/', [SearchController::class, 'cari'])->name('searches.search');
@@ -30,24 +51,3 @@ Route::prefix('api/komentar')->group(function () {
 
 Route::post('/api/notifikasi', [NotifikasiController::class, 'tambahNotifikasi'])->name('notifikasis.tambah');
 Route::get('/api/notifikasi/{userId}', [NotifikasiController::class, 'lihatNotifikasi'])->name('notifikasis.lihat');
-
-Route::post('/register', [UserController::class, 'register']);
-Route::post('/login', [UserController::class, 'login']);
-
-Route::prefix('api/users')->group(function () {
-    Route::post('/register', [UserController::class, 'daftar'])->name('users.register');
-    Route::post('/login', [UserController::class, 'login'])->name('users.login');
-    Route::post('/logout', [UserController::class, 'logout'])->middleware('auth:sanctum')->name('users.logout');
-    Route::middleware('auth:sanctum')->group(function () {
-        Route::get('/profile', [UserController::class, 'profil'])->name('users.profile');
-        Route::patch('/profile/username', [UserController::class, 'setUsername'])->name('users.updateUsername');
-        Route::patch('/profile/password', [UserController::class, 'setPassword'])->name('users.updatePassword');
-        Route::put('/profile', [UserController::class, 'updateProfile'])->name('users.updateProfile');
-    });
-});
-
-Route::middleware('auth:sanctum')->group(function () {
-    Route::get('/profils/{id}', [ProfilController::class, 'show']); // Lihat profil
-    Route::put('/profils/{id}', [ProfilController::class, 'update']); // Edit profil
-    Route::get('/profils/{id}/stats', [ProfilController::class, 'stats']); // Lihat statistik
-});

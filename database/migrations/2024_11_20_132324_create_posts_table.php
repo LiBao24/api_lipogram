@@ -10,7 +10,7 @@ class CreatePostsTable extends Migration
     {
         Schema::create('posts', function (Blueprint $table) {
             $table->increments('id_post');
-            $table->unsignedBigInteger('id_user');
+            $table->Integer('id_user');
             $table->longText('media');
             $table->text('caption');
             $table->integer('jmlh_like')->default(0);
@@ -18,7 +18,7 @@ class CreatePostsTable extends Migration
             $table->date('wkt_post');
             $table->timestamps();
 
-            $table->foreign('id_user')->references('id')->on('users')->onDelete('cascade');
+            // $table->foreign('id_user')->references('id_user')->on('users');
         });
     }
 

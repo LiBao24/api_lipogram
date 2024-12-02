@@ -10,14 +10,14 @@ class CreateNotifikasisTable extends Migration
     {
         Schema::create('notifikasis', function (Blueprint $table) {
             $table->increments('id_notifikasi');
-            $table->unsignedBigInteger('id_post')->nullable();
-            $table->unsignedBigInteger('id_user');
+            $table->Integer('id_post')->nullable();
+            $table->Integer('id_user');
             $table->string('isi_notifikasi');
             $table->dateTime('wkt_notifikasi');
             $table->timestamps();
 
-            $table->foreign('id_post')->references('id_post')->on('posts')->onDelete('cascade');
-            $table->foreign('id_user')->references('id')->on('users')->onDelete('cascade');
+            // $table->foreign('id_post')->references('id_post')->on('posts');
+            // $table->foreign('id_user')->references('id')->on('users');
         });
     }
 
